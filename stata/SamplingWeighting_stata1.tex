@@ -1,0 +1,99 @@
+
+\documentclass{beamer}
+\setbeamertemplate{navigation symbols}{}
+
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{listings}
+\usepackage{url}
+\usepackage{pgf}
+
+\usetheme{Montpellier}
+
+
+
+\beamersetuncovermixins{\opaqueness<1>{25}}{\opaqueness<2->{15}}
+
+
+\setbeamertemplate{footline}
+{%
+\begin{beamercolorbox}[wd=0.5\textwidth,ht=3ex,dp=1.5ex,leftskip=.5em,rightskip=.5em]{author in head/foot}%
+\usebeamerfont{author in head/foot}%
+\insertframenumber\hfill\insertshortauthor%
+\end{beamercolorbox}%
+\vspace*{-4.5ex}\hspace*{0.5\textwidth}%
+\begin{beamercolorbox}[wd=0.5\textwidth,ht=3ex,dp=1.5ex,left,leftskip=.5em]{title in head/foot}%
+\usebeamerfont{title in head/foot}%
+\insertshorttitle%
+\end{beamercolorbox}%
+}
+
+\newcommand{\R}[1]{{\tt \color{blue}  #1}}
+
+
+
+
+
+\definecolor{Rblau}{rgb}{.3,.6,.9}
+
+\begin{document}
+\title{Sampling and Weighting \\ "Data Analysis with STATA"}  
+\subtitle{First steps}
+
+\author{Jan-Philipp Kolb}
+\date{Dienstag, 29. Juli, 2015} 
+
+%
+%------------------------------------------------------------------------
+%
+
+% \newcommand{\R}[1]{{\tt \color{blue}  #1}}
+
+\definecolor{Rblau}{rgb}{.3,.6,.9}
+\definecolor{beaublue}{rgb}{0.9, 1, 0.9}
+
+\lstdefinelanguage{stata}[]{XML}{
+        morecomment=[l]{*},  
+        morekeywords={summarize},
+        sensitive=false
+}
+
+\lstset{language=stata,
+        basicstyle=\ttfamily\footnotesize,
+	  backgroundcolor=\color{orange},
+        keywordstyle=\color{blue}\bfseries,
+        identifierstyle=\color{Rblau},
+        commentstyle=\color{gray},
+        stringstyle=\color{green}\ttfamily,
+        showstringspaces=false,
+        frame=tb}
+%
+%------------------------------------------------------------------------
+%
+
+
+\begin{titlepage} % Titelseite einrichten
+
+
+% \includegraphics[width=.2\textwidth]{figure/rlogobig.png}
+
+\thispagestyle{empty} % Die Titelseite soll keine Seitenzahl bekommen...[1]
+\end{titlepage}
+
+%
+%------------------------------------------------------------------------
+%
+
+
+\begin{frame}[fragile]
+\frametitle{Gliederung}\tableofcontents
+
+\begin{lstlisting}
+* dies ist ein Kommentar
+summarize
+\end{lstlisting}
+% http://www.stata.com/manuals13/rsummarize.pdf
+\end{frame} 
+
+\end{document}

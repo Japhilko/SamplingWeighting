@@ -1,0 +1,7 @@
+\frametitle{Gliederung}\tableofcontents
+
+\begin{lstlisting}
+* dies ist ein Kommentar
+summarize
+\end{lstlisting}
+% http://www.stata.com/manuals13/rsummarize.pdf
