@@ -5,18 +5,27 @@ date: "30/07/2015"
 output: pdf_document
 ---
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r,echo=F}
+library(xtable)
+```
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+## Import the data
 
 ```{r}
-summary(cars)
+library(foreign)
+stich1 <- read.spss("https://github.com/Japhilko/SamplingWeighting/raw/master/data/stich1.sav",to.data.frame=T)
 ```
 
-You can also embed plots, for example:
+## Get the survey package and define survey design object
 
-```{r, echo=FALSE}
-plot(cars)
+```{r}
+library(survey)
+dclus_ex1 <-svydesign(id=~PSU+id,prob=~InclusionProbability_1_,data=stich1)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+meanEx1_survey <- svymean(~y, dclus_ex1, deff=TRUE)
+```
+
+
