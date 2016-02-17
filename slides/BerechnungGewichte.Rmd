@@ -1,0 +1,18 @@
+---
+title: "Berechnung Gewichte"
+author: "Jan-Philipp Kolb"
+date: "17 Februar 2016"
+output: html_document
+---
+
+## Designgewichtung 
+
+Wir bezeichnen die Grundgesamtheit mit U 
+
+und ihre Elemente mit 
+
+
+
+```mathjax
+x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+```

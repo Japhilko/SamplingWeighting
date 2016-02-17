@@ -1,0 +1,40 @@
+\documentclass{beamer}
+
+\begin{document}
+
+<<setup, include=FALSE>>=
+library(knitr)
+library(xtable)
+library(plyr)
+library(survey)
+library(sampling)
+library(mvtnorm)
+library(PracTools)
+library(GGally)
+library(ggplot2)
+opts_chunk$set(fig.path='graphs/beamer-',fig.align='center',fig.show='hold',size='footnotesize')
+@
+
+\begin{frame}
+\frametitle{Designgewichtung}
+
+Wir bezeichnen die Grundgesamtheit mit $U$   und ihre Elemente mit $i_u$ für $i = 1,...,N$. 
+
+$N$ ist der Umfang der  Grundgesamtheit.  
+
+Häufig  wird  auch  einfach  nur  die  Indexmenge 
+
+\begin{equation}
+U = \{1,..., N \}
+\end{equation}
+
+\end{frame}
+
+\begin{frame}
+<<>>=
+a <- 1:8
+@
+
+\end{frame}
+
+\end{document}
