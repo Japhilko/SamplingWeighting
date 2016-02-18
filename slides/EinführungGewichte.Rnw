@@ -1,0 +1,30 @@
+\documentclass{beamer}
+
+\begin{document}
+
+<<setup, include=FALSE>>=
+library(knitr)
+library(xtable)
+library(plyr)
+library(survey)
+library(sampling)
+library(mvtnorm)
+library(PracTools)
+library(GGally)
+library(ggplot2)
+opts_chunk$set(fig.path='graphs/beamer-',fig.align='center',fig.show='hold',size='footnotesize')
+@
+
+
+\begin{frame}
+
+\begin{itemize}
+\item Introduction
+\item Design weights
+\item Cell weights
+\end{itemize}
+
+\end{frame}
+
+
+\end{document}
