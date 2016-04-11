@@ -2,38 +2,51 @@
 title: "Gewichtung"
 author: "Jan-Philipp Kolb"
 date: "11 April 2016"
-output: html_document
+output: slidy_presentation
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,message=F)
 library(knitr)
 ```
+
+## Einleitung
+
+- Ein Survey Gewicht ist ein Wert, der jeweils einer Beobachtung zugeordnet ist.
+
+- Oft werden Gewichte auf die Anzahl der Fälle oder die Populationsgröße normiert.
+
+- Ein Gewicht w kann kleiner , gleich oder größer als 1 sein.
+
+- Ein Design-Gewicht ist bei der Schätzung proportional zum relativen Beitrag eines Befragten.
+
+- Es ist proportional zum Inversen der Inklusionswahrscheinlichkeit.
+
+- Die Größe einer speziellen Gruppe wird durch die Summe ihrer Gewichte geschätzt. 
 
 ![Formel 1](figure/Cider_Formel1.PNG)
 
 ## Verschiedene Arten von Gewichten
 
-Design Weights
+Design Gewichte
 
-- to compensate sampling with unequal
-selection probabilities (e.g. stratified
-sampling with disproportional allocation)
+- um die Stichprobenziehung mit ungleichen Wahrscheinlichkeiten zu kompensieren (z.B. stratifizierte
+Stichproben mit einer disproportionalen Allokation)
 
-CellWeights
+Anpassungsgewichte
 
-- to adjust for “bad” samples
-- to compensate for non-response
+- um schlechte Stichproben anzupassen 
+- um Nonresponse zu Kompensieren 
 
-Total Weights
+Gesamtgewicht
 
-total weight = design weight * cell weight
+Gesamtgewicht = Design-Gewicht * Anpassungsgewicht
 
 ```{r,echo=F}
 library(survey)
 ```
 
-
+## Schichtung
 
 ## Stratified sampling with disproportional allocation
 
@@ -61,6 +74,7 @@ Strata: North Central, Northeast, South, West
 
 ```{r,echo=F}
 reg <- agstrat$region
+tab_reg <- table(agstrat$region)
 reg_names <- c("North Central","Notheast,South,West")
 ```
 
@@ -70,8 +84,68 @@ reg_names <- c("North Central","Notheast,South,West")
 ```{r,echo=F}
   ### Example 3.2, p. 63 
 agsrsDesign <- svydesign(ids=~1, weights = ~1, data = agsrs)
-svyratio(numerator = ~acres92, denominator = ~acres87, 
-      design = agsrsDesign) # proportion B hat
+erg1 <- svyratio(numerator = ~acres92, denominator = ~acres87,  design = agsrsDesign) # proportion B hat
+
+kable(erg1$ratio)
+
+kable(erg1$var)
 ```
 
+```{r BeispielGabler,echo=F,eval=F}
+library(survey)
+datstr <- read.table("agstrat.dat", header = TRUE, sep = ",", na.strings = "-99")
+fpc_p <- function(x,y,data){for(i in 1:length(x)){data[data%in%x[i]] <- y[i]}
+return(data)} # population sizes
+fpc <- as.numeric(fpc_p(c("NC","NE","S","W"),c(1054,220,1382,422),data=as.character(datstr$REGION)))
+datstr <- cbind(datstr,fpc)
+strat_design <- svydesign(id=~1,strata=~REGION,fpc=~fpc,data=datstr)
+strat_design
+Stratified Independent Sampling design
+svydesign(id = ~1, strata = ~REGION, fpc = ~fpc, data = datstr)
+```
 
+## Horvitz Thompson
+
+The Horvitz-Thompson estimator for the total T_y is defined by
+
+![Horvitz Thompson](figure/HorvitzThompson.PNG)
+
+It is unbiased if all inclusion probabilities are positive.
+The variance of the Horvitz-Thompson estimator is given by:
+
+![Variance HT](figure/HT2.PNG)
+
+If all inclusion probabilities of second order pi_ij are positive we have:
+
+![VarianceHT2](figure/VarianceHT2.PNG)
+
+## Cell Weights
+
+![Cell Weights](figure/CellWeights.PNG)
+
+The iterative proportional fitting algorithm (IPF) is an iterative algorithm for estimating cell values of a contingency table such that the marginal totals remain
+fixed and the estimated table decomposes into an outer product. 
+
+Deming and Stephan(1940)
+
+## Nonresponse
+
+![Non Response](figure/NonResponse.PNG)
+
+## Nonresponse
+
+Sometimes, answers for some units of the selected sample
+are either totally or partly missing. This is referred to as nonresponse.
+Sources for unit non-response can be not-athomes,
+refusals, unable to answer or not found. If a
+respondent answers some but not all the items, these missing
+are referred to as item non-response. Non-response is a very
+serious problem and the treatment of which requires
+modeling assumptions. Therefore, it may be easier to deal
+with non-response in the framework of model-based
+inference. Usually, weighting procedures are applied for
+treating unit non-response and imputation methods for item
+non-response. Calibration estimators are used very often
+nowadays to get a grip on the non-response problem.
+
+## Calibration Estimator (GREG)
