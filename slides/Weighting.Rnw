@@ -1,0 +1,20 @@
+\documentclass{article}
+
+\begin{document}
+
+A survey weight is a value assigned to each case in the data
+file.
+
+Often weights are normed to the number of cases in the data
+file or to the population size.
+
+A weight w can be less, equal or larger than 1.
+
+A design weight is proportional to the relative contribution of a respondent with respect to the final estimate. It is
+proportional to the inverse of the inclusion probability.
+
+The size of a special group is estimated by the sum of its
+weights.
+
+
+\end{document}

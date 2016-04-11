@@ -1,0 +1,77 @@
+---
+title: "Gewichtung"
+author: "Jan-Philipp Kolb"
+date: "11 April 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+```
+
+![Formel 1](figure/Cider_Formel1.PNG)
+
+## Verschiedene Arten von Gewichten
+
+Design Weights
+
+- to compensate sampling with unequal
+selection probabilities (e.g. stratified
+sampling with disproportional allocation)
+
+CellWeights
+
+- to adjust for “bad” samples
+- to compensate for non-response
+
+Total Weights
+
+total weight = design weight * cell weight
+
+```{r,echo=F}
+library(survey)
+```
+
+
+
+## Stratified sampling with disproportional allocation
+
+![Stratfied Sampling](figure/StratfiedSampling.PNG)
+
+Horvitz-Thompson estimator is identical to the usual stratified estimator
+
+## [Beispiel Lohr](http://www.stat.purdue.edu/~jennings/stat522/datasets/index.html)
+
+```{r,echo=F}
+# install.packages("SDaA")
+library(SDaA)
+data(agstrat)
+# colnames(agstrat)
+cnames <- c("state","acres92","acres87","region","weight")
+# intersect(colnames(agstrat),cnames)
+ind <- match(cnames,colnames(agstrat))
+kable(head(agstrat[,ind]))
+```
+
+Example Lohr agstrat.dat
+Strata: North Central, Northeast, South, West
+
+## 
+
+```{r,echo=F}
+reg <- agstrat$region
+reg_names <- c("North Central","Notheast,South,West")
+```
+
+
+## [Alle Beispiele von Lohr](https://r-forge.r-project.org/scm/viewvc.php/*checkout*/pkg/inst/doc/SDaA_using_survey.Rnw?revision=24&root=sda&pathrev=24)
+
+```{r,echo=F}
+  ### Example 3.2, p. 63 
+agsrsDesign <- svydesign(ids=~1, weights = ~1, data = agsrs)
+svyratio(numerator = ~acres92, denominator = ~acres87, 
+      design = agsrsDesign) # proportion B hat
+```
+
+
