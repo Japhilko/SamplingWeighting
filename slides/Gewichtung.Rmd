@@ -2,17 +2,18 @@
 title: "Gewichtung"
 author: "Jan-Philipp Kolb"
 date: "11 April 2016"
-output: slidy_presentation
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE,message=F)
 library(knitr)
+SP_teil <- F
 ```
 
-## Einleitung
+## Eigenschaften von Gewichten
 
-- Ein Survey Gewicht ist ein Wert, der jeweils einer Beobachtung zugeordnet ist.
+- Ein Survey-Gewicht ist ein Wert, der jeweils einer Beobachtung zugeordnet ist.
 
 - Oft werden Gewichte auf die Anzahl der Fälle oder die Populationsgröße normiert.
 
@@ -28,7 +29,7 @@ library(knitr)
 
 ## Verschiedene Arten von Gewichten
 
-Design Gewichte
+Designgewicht
 
 - um die Stichprobenziehung mit ungleichen Wahrscheinlichkeiten zu kompensieren (z.B. stratifizierte
 Stichproben mit einer disproportionalen Allokation)
@@ -45,6 +46,32 @@ Gesamtgewicht = Design-Gewicht * Anpassungsgewicht
 ```{r,echo=F}
 library(survey)
 ```
+
+## Was sind Design-Gewichte
+
+- Stichprobenziehung - also keine Vollerhebung
+- ungleiche Wahrscheinlichkeiten - bspw. durch Schichtung und Klumpung
+
+
+# Stichprobendesign
+
+
+```{r,eval=SP_teil,echo=F}
+## Systematische Stichprobe
+
+# install.packages("sampling")
+library(sampling)
+N=12
+n=3
+cluster(1:N,method="systematic",size=n,pik=rep(1,N)/N)
+# Mainz Gabler - Folie 16
+```
+
+
+## Cluster Sample
+
+![Beispiel aus Lohr](figure/ClusterSample.PNG)
+
 
 ## Schichtung
 
@@ -67,7 +94,7 @@ ind <- match(cnames,colnames(agstrat))
 kable(head(agstrat[,ind]))
 ```
 
-Example Lohr agstrat.dat
+Beispiel Lohr agstrat.dat
 Strata: North Central, Northeast, South, West
 
 ## 
@@ -79,7 +106,7 @@ reg_names <- c("North Central","Notheast,South,West")
 ```
 
 
-## [Alle Beispiele von Lohr](https://r-forge.r-project.org/scm/viewvc.php/*checkout*/pkg/inst/doc/SDaA_using_survey.Rnw?revision=24&root=sda&pathrev=24)
+## [Beispiele von Lohr](https://r-forge.r-project.org/scm/viewvc.php/*checkout*/pkg/inst/doc/SDaA_using_survey.Rnw?revision=24&root=sda&pathrev=24)
 
 ```{r,echo=F}
   ### Example 3.2, p. 63 
