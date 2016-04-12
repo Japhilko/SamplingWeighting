@@ -6,28 +6,13 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,message=F)
+knitr::opts_chunk$set(echo = F,message=F,cache=T)
 library(knitr)
 SP_teil <- F
 ```
 
-## Eigenschaften von Gewichten
 
-- Ein Survey-Gewicht ist ein Wert, der jeweils einer Beobachtung zugeordnet ist.
-
-- Oft werden Gewichte auf die Anzahl der Fälle oder die Populationsgröße normiert.
-
-- Ein Gewicht w kann kleiner , gleich oder größer als 1 sein.
-
-- Ein Design-Gewicht ist bei der Schätzung proportional zum relativen Beitrag eines Befragten.
-
-- Es ist proportional zum Inversen der Inklusionswahrscheinlichkeit.
-
-- Die Größe einer speziellen Gruppe wird durch die Summe ihrer Gewichte geschätzt. 
-
-![Formel 1](figure/Cider_Formel1.PNG)
-
-## Verschiedene Arten von Gewichten
+## Einordnung - Verschiedene Arten von Gewichten
 
 Designgewicht
 
@@ -47,18 +32,192 @@ Gesamtgewicht = Design-Gewicht * Anpassungsgewicht
 library(survey)
 ```
 
+## Eigenschaften von Gewichten
+
+- Ein Survey-Gewicht ist ein Wert, der jeweils einer Beobachtung zugeordnet ist.
+
+- Oft werden Gewichte auf die Anzahl der Fälle oder die Populationsgröße normiert.
+
+- Ein Gewicht w kann kleiner , gleich oder größer als 1 sein.
+
+- Ein Design-Gewicht ist bei der Schätzung proportional zum relativen Beitrag eines Befragten.
+
+- Es ist proportional zum Inversen der Inklusionswahrscheinlichkeit.
+
+- Die Größe einer speziellen Gruppe wird durch die Summe ihrer Gewichte geschätzt. 
+
+# Grundlagen der Designgewichtung
+
+
 ## Was sind Design-Gewichte
 
 - Stichprobenziehung - also keine Vollerhebung
 - ungleiche Wahrscheinlichkeiten - bspw. durch Schichtung und Klumpung
 
+## Allgemeine Überlegungen zum Erhebungsdesign
+
+- Ziel der Erhebung
+- Genaue Definition der Grundgesamtheit
+- Mögliche Auswahlrahmen
+- Erhebungsmodus
+- Externe Daten
+- Aussagen über Subgruppen
+- Modellvorstellungen
+- Nonresponse
+- Stichprobendesign
+- Schätzverfahren, Gewichtung
+- Stichprobenkosten
+- Software
+- Dokumentation, Methodenbericht
+
+## Erhebungsmodus
+
+- persönlich-mündlich
+- telefonisch
+- schriftlich
+- online
+- social media
+- mixed mode
+
+## Überblick Zahlen Erhebungsmodus
+
+![Zahlen des ADM](figure/QuantIn.PNG)
+
+## Beispiele von Bevölkerungsumfragen
+
+- BIBB/BAuA-Erwerbstätigenbefragung - Arbeit und Beruf im Wandel, Erwerb und Verwertung beruflicher Qualifikationen
+
+<http://www.bibb.de/de/62622.htm>
+
+- Mikrozensus (1 Prozent Stichprobe)
+
+<https://www.destatis.de/DE/ZahlenFakten/GesellschaftStaat/Bevoelkerung/Mikrozensus.html>
+
+<https://www.destatis.de/DE/Publikationen/Qualitaetsberichte/Bevoelkerung/Mikrozensus2013.html>
+
+- European Social Survey
+
+<http://ess.nsd.uib.no>
+
+<http://www.europeansocialsurvey.org>
+
+- PIAAC
+
+<http://www.gesis.org/piaac/piaac-home/>
+
+
+## Vorteile von Stichproben
+
+- Stichproben in der Regel billiger
+- Geringere Belastung für die Bevölkerung
+- Ergebnisse stehen bei Auswahlen schneller zur Verfügung
+- Geringere Größe des Mitarbeiterstabes notwendig,
+bessere Schulung möglich
+- Größere Messgenauigkeit bei Auswahlen (Fachleute)
+- Besserer Umgang mit Ausfällen möglich
+(Nachfassaktionen, evtl- auch mit Incentives)
+- Einzige Möglichkeit bei Zerstörung des Untersuchungsgegenstandes
+(z-B- Gütekontrolle bei Glühlampen, Elchtest, Blutgruppe)
+
+
+## Einschränkungen bei Stichproben
+
+- Stichproben bei verhältnismäßig kleinen Grundgesamtheiten nicht sinnvoll
+- Aussagen für kleine Subgruppen unpräziser als bei Totalerhebung
+- Bei sehr heterogenen Grundgesamtheiten eher Totalerhebung
+(z-B- Fingerabdrücke in einer Population im Gegensatz zu Blutzellen in einem Körper)
+- Totalerhebungen sind einzige Möglichkeit bei Gefahr der Zerstörung der
+Grundgesamtheit (z-B-Rückrufaktion)
+
+## Grundgesamtheit
+
+- Die Grundgesamtheit (engl- target population) ist die Menge von Elementen, für
+die Aussagen - z-B- unter Zuhilfenahme von Statistiken aus einer Stichprobe -
+gemacht werden sollen- Sie wird auch Population, Untersuchungs- oder
+Zielgesamtheit bezeichnet-
+- Sie muss sachlich, räumlich und zeitlich definiert sein-
+- Sie muss an der Themenstellung und an der praktischen Durchführbarkeit
+orientiert sein
+
+## Auswahlrahmen/Auswahlgesamtheit
+
+- Der Auswahlrahmen (engl. sampling frame) ist eine Liste von Einheiten (engl.
+sampling units), aus dem die Stichprobe gezogen wird und über den man Zugang zu den Untersuchungseinheiten erhält (z.B. das Telefonbuch). - Die über den Auswahlrahmen erreichbaren Einheiten bilden die Auswahlgesamtheit.
+
+- Idealerweise enthält der Auswahlrahmen genau alle Einheiten der Untersuchungsgesamtheit. In der Praxis ist das aber selten der Fall.
+
+## Coverage
+
+- Ist ein Element der Grundgesamtheit im Auswahlrahmen bzw. der Auswahlgesamtheit nicht enthalten, gehört es zum „undercoverage“ , d.h. zu einem Fehlbestand. Ein Beispiel wären die Personen, die nicht im Telefonfonbuch stehen.
+
+- Gehört ein Element des Auswahlrahmens nicht zur Grundgesamtheit, spricht
+man von „overcoverage“, d.h. von Karteileichen oder Überhöhung. Ein Beispiel
+wären Geschäftsnummern im Telefonbuch.
+
+## Die Auswahlgesamtheit
+
+![Auswahlgesamtheit](figure/Auswahlgesamtheit.bmp)
+
 
 # Stichprobendesign
 
 
-```{r,eval=SP_teil,echo=F}
+
+## Beispiel einfache Zufallsstichprobe
+
+```{r}
+yi = c(1,2,4,4,7,7,7,8)
+yi2 = c(1,2,4,4,7,7,7,8)
+id = 1:length(yi)
+dat <- data.frame(yi,id)
+# kable(dat)
+# names(yi) <- id
+# barplot(yi,col="royalblue")
+cat("Population:",yi)
+n <- 4
+for(i in 1:8){
+  samp1 <- sample(yi,n,replace=T)
+  cat(i,". Stichprobe (n=4):",samp1,"\n",sep="")
+}
+```
+
+## Was passiert bei vielen Stichproben
+
+```{r}
+Nsamples <- 10
+SRS_bsp <- function(Nsamples){
+  erg <- list()
+  for (i in 1:Nsamples){
+    erg[[i]] <- sample(yi,n)  
+  }
+  E_mean <- unlist(lapply(erg,mean))
+  return(E_mean)
+}
+```
+
+
+
+```{r}
+par(mfrow=c(2,2))
+hist(SRS_bsp(10),col=2,main="")
+hist(SRS_bsp(100),col=2,main="")
+hist(SRS_bsp(1000),col=2,main="")
+hist(SRS_bsp(10000),col=4,main="sampling distribution")
+```
+
+
+
+```{r,eval=F}
+library(xtable)
+# install.packages("tables")
+library(tables)
+# https://cran.r-project.org/web/packages/htmlTable/vignettes/tables.html
+```
+
+
 ## Systematische Stichprobe
 
+```{r,eval=SP_teil,echo=F}
 # install.packages("sampling")
 library(sampling)
 N=12
@@ -74,6 +233,51 @@ cluster(1:N,method="systematic",size=n,pik=rep(1,N)/N)
 
 
 ## Schichtung
+
+
+## Beispieldatensatz Schichtung
+
+```{r}
+data=rbind(matrix(rep("nc",165),165,1,byrow=TRUE),matrix(rep("sc",70),70,1,byrow=TRUE))
+data=cbind.data.frame(data,c(rep(1,100), rep(2,50), rep(3,15), rep(1,30),rep(2,40)),
+1000*runif(235))
+names(data)=c("state","region","income")
+kable(head(data))
+```
+
+
+
+```{r}
+region_l <- paste("region",data$region)
+state_l <- paste("state",data$state)
+kable(table(region_l,state_l))
+```
+
+
+```{r}
+# there are 5 cells with non-zero values
+# one draws 5 samples (1 sample in each stratum)
+# the sample stratum sizes are 10,5,10,4,6, respectively
+# the method is 'srswor' (equal probability, without replacement)
+
+s=sampling::strata(data,c("region","state"),
+         size=c(10,5,10,4,6), 
+         method="srswor")
+```
+
+
+## Stratified Random Sampling (STRAT)
+
+```{r,echo=F,eval=F}
+library(survey)
+library(sampling)
+test_frame <- cbind((1:14),c(rep(1:4),2*rep(1,3),3*rep(1,3),4*rep(1:4)))
+
+names(test_frame) <- c("NR","stratum")
+sampling::strata(test_frame,stratanames="stratum",
+       size=rep(2,4),method="srswor")
+```
+
 
 ## Stratified sampling with disproportional allocation
 
@@ -146,6 +350,12 @@ If all inclusion probabilities of second order pi_ij are positive we have:
 
 ![VarianceHT2](figure/VarianceHT2.PNG)
 
+
+![Formel 1](figure/Cider_Formel1.PNG)
+
+
+# Grundlagen der Anpassungsgewichtung
+
 ## Cell Weights
 
 ![Cell Weights](figure/CellWeights.PNG)
@@ -161,16 +371,21 @@ Deming and Stephan(1940)
 
 ## Nonresponse
 
-Sometimes, answers for some units of the selected sample
-are either totally or partly missing. This is referred to as nonresponse.
-Sources for unit non-response can be not-athomes,
-refusals, unable to answer or not found. If a
-respondent answers some but not all the items, these missing
-are referred to as item non-response. Non-response is a very
-serious problem and the treatment of which requires
-modeling assumptions. Therefore, it may be easier to deal
+- Sometimes, answers for some units of the selected sample
+are either totally or partly missing. 
+- This is referred to as nonresponse.
+
+- Sources for unit non-response can be not-athomes,
+refusals, unable to answer or not found. 
+- If a respondent answers some but not all the items, these missing are referred to as item non-response. 
+
+- Non-response is a very serious problem and the treatment of which requires modeling assumptions. 
+
+- Therefore, it may be easier to deal
 with non-response in the framework of model-based
-inference. Usually, weighting procedures are applied for
+inference. 
+
+- Usually, weighting procedures are applied for
 treating unit non-response and imputation methods for item
 non-response. Calibration estimators are used very often
 nowadays to get a grip on the non-response problem.
