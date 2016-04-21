@@ -1,0 +1,74 @@
+---
+title: "Oversampling"
+author: "Jan-Philipp Kolb"
+date: "21 April 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Literatur
+
+Andrew Gelman - [Survey Weighting is a mess](http://www.stat.columbia.edu/~gelman/research/published/STS226.pdf)
+
+[Zensus Artikel](https://www.destatis.de/DE/Publikationen/StatistikWissenschaft/Band21_StichprobenoptimierungZensus1030821129004.pdf)
+
+Meng - [Power Shrinkage](http://andrewgelman.com/wp-content/uploads/2011/05/meng_JSM_presentation_20090802_8am.pdf)
+
+William G. Cochran - [Stichprobenverfahren - S. 306](https://books.google.de/books?id=8E3oBQAAQBAJ&pg=PA306&lpg=PA306&dq=Was+passiert+bei+sehr+ungleichen+Auswahlwahrscheinlichkeiten&source=bl&ots=qAeO9X5_TQ&sig=00OhAvJnd4gRJLqG9xnDlMwzmXw&hl=de&sa=X&ved=0ahUKEwjTkabNhp_MAhXoJ8AKHS3GB38Q6AEIJDAA#v=onepage&q=Was%20passiert%20bei%20sehr%20ungleichen%20Auswahlwahrscheinlichkeiten&f=false)
+
+## Einfaches Datenmodell
+
+```{r}
+N <- 10000
+id <- 1:N
+mig <- sample(c("d","nd"),N,prob=c(.8,.2),replace=T)
+table(mig)
+```
+
+```{r}
+area <- sample(LETTERS[1:10],N,prob=c(rep(.2,4),rep(.04,4),rep(.02,2)),replace=T)
+```
+
+```{r}
+table(mig,area)
+df_tab <- data.frame(table(mig,area))
+min_tab <- min(df_tab$Freq)
+```
+
+```{r}
+samp_point <- paste(area,mig,sep="_")
+
+n_d <- min_tab
+
+samp_fun <- function(x){
+  len <- length(x)
+  return(sample(c(rep(1,n_d),rep(0,(len-n_d)))))
+}
+
+erg <- tapply(id,samp_point,samp_fun)
+
+nams <- names(erg)
+s <- vector()
+
+for (i in 1:length(nams)){
+  s[samp_point==nams[i]] <- erg[[i]]
+}
+```
+
+```{r}
+dat <- data.frame(id,area,mig,samp_point,s)
+head(dat)
+```
+
+## Aussagen
+
+- Wichtig ist, was das Ziel der Gewichtung ist
+
+## Links
+
+[Referat Gewichtung](http://eswf.uni-koeln.de/lehre/06/05/s10r.pdf)
+
+[Different types of weights](http://surveyanalysis.org/wiki/Different_Types_of_Weights)
